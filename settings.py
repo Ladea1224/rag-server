@@ -3,7 +3,7 @@ import tempfile
 from pathlib import Path
 
 from dotenv import load_dotenv
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 
 ROOT = Path(__file__).resolve().parent
 if os.name == 'nt':
@@ -15,18 +15,17 @@ if os.name == 'nt':
     tempfile.tempdir = str(temp_dir)
 
 load_dotenv(ROOT / '.env')
-GEMINI_API_VERSION = os.getenv('GOOGLE_GENAI_API_VERSION', 'v1beta')
-DB_DIR = Path(os.getenv('CHROMA_DIR', 'data/chroma'))
+DB_DIR = Path(os.getenv('CHROMA_DIR', 'data/chroma_openai'))
 if not DB_DIR.is_absolute():
     DB_DIR = ROOT / DB_DIR
-COLLECTION = os.getenv('CHROMA_COLLECTION', 'company_policy_gemini')
-EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL', 'models/gemini-embedding-001')
-CHAT_MODEL = os.getenv('CHAT_MODEL', 'gemini-2.5-flash')
+COLLECTION = os.getenv('CHROMA_COLLECTION', 'company_policy_openai')
+EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL', 'text-embedding-3-small')
+CHAT_MODEL = os.getenv('CHAT_MODEL', 'gpt-5-nano')
 
 
 def make_embeddings():
-    if not os.getenv('GOOGLE_API_KEY'):
-        raise RuntimeError('.env에 GOOGLE_API_KEY를 설정하세요.')
-    return GoogleGenerativeAIEmbeddings(
-        model=EMBEDDING_MODEL, api_version=GEMINI_API_VERSION,
+    if not os.getenv('OPENAI_API_KEY'):
+        raise RuntimeError('.env에 OPENAI_API_KEY를 설정하세요.')
+    return OpenAIEmbeddings(
+        model=EMBEDDING_MODEL, request_timeout=60, max_retries=0,
     )

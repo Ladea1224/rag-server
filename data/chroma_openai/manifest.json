@@ -1,0 +1,7 @@
+{
+  "embedding_model": "text-embedding-3-small",
+  "collection": "company_policy_openai",
+  "chunks": 9,
+  "source": "fictional_company_policy.pdf",
+  "sha256": "8f68e13dd44b4241ad71f3edb00d8e3ee993113da47a91830b25819004d32eab"
+}
