@@ -4,4 +4,3 @@ pip-*/
 pip-*.log
 .env
 __pycache__/
-data/
